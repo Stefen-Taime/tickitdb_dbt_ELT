@@ -1,0 +1,23 @@
+tickitdb:
+  outputs:
+    dev:
+      type: postgres
+      threads: 3
+      host: localhost
+      port: 5432
+      user: postgres
+      pass: postgres
+      dbname: postgres
+      schema: public
+
+    prod:
+      type: postgres
+      threads: 1
+      host: [host]
+      port: [port]
+      user: [prod_username]
+      pass: [prod_password]
+      dbname: [dbname]
+      schema: [prod_schema]
+
+  target: dev

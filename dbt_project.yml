@@ -1,0 +1,78 @@
+name: 'tickitdb'
+version: '1.0.0'
+config-version: 2
+
+profile: 'tickitdb'
+
+model-paths: ["models"]
+analysis-paths: ["analyses"]
+test-paths: ["tests"]
+seed-paths: ["seeds"]
+macro-paths: ["macros"]
+snapshot-paths: ["snapshots"]
+
+target-path: "target"
+clean-targets:
+  - "target"
+  - "dbt_packages"
+
+# Add seeds configuration
+seeds:
+  tickitdb:
+    category:
+      enabled: true
+      materialized_as: table
+    date:
+      enabled: true
+      materialized_as: table
+    event:
+      enabled: true
+      materialized_as: table
+    listing:
+      enabled: true
+      materialized_as: table
+    sale:
+      enabled: true
+      materialized_as: table
+    user:
+      enabled: true
+      materialized_as: table
+    venue:
+      enabled: true
+      materialized_as: table
+
+# Update models configuration
+models:
+  tickitdb:
+    staging:
+      staging:
+        +tags:
+        - "staging"
+    intermediate:
+      +materialized: table
+    mart:
+      +materialized: table
+      marketing:
+        dim_marketing:
+          +materialized: table
+          +sort: user_id
+          +dist: user_id
+      sales:
+        fact_sales:
+          +materialized: table
+          +sort: list_id
+          +dist: list_id
+      fact_listings:
+        +materialized: table
+        +sort: list_id
+        +dist: list_id
+
+# Add analyses configuration
+analyses:
+  tickitdb:
+    buyer_likes:
+      +materialized: table
+      +sort: event_type
+      +dist: like_id
+      +tags:
+        - "analyses"

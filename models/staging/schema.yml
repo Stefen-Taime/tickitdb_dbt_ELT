@@ -1,0 +1,170 @@
+version: 2
+
+models:
+  - name: stg_category
+    description: Staging model for the category table.
+    columns:
+      - name: catid
+        description: Unique identifier for the category.
+        tests:
+          - unique
+          - not_null
+      - name: catgroup
+        description: Category group.
+      - name: catname
+        description: Name of the category.
+      - name: catdesc
+        description: Description of the category.
+
+  - name: stg_date
+    description: Staging model for the date table.
+    columns:
+      - name: dateid
+        description: Unique identifier for the date.
+        tests:
+          - unique
+          - not_null
+      - name: caldate
+        description: Calendar date.
+      - name: day
+        description: Day of the month.
+      - name: month
+        description: Month of the year.
+      - name: year
+        description: Year.
+      - name: week
+        description: Week of the year.
+      - name: qtr
+        description: Quarter of the year.
+      - name: holiday
+        description: Indicator for holidays (true/false).
+
+  - name: stg_event
+    description: Staging model for the event table.
+    columns:
+      - name: eventid
+        description: Unique identifier for the event.
+        tests:
+          - unique
+          - not_null
+      - name: venueid
+        description: Foreign key for the venue.
+      - name: catid
+        description: Foreign key for the category.
+      - name: dateid
+        description: Foreign key for the date.
+      - name: eventname
+        description: Name of the event.
+      - name: starttime
+        description: Start time of the event.
+
+  - name: stg_listing
+    description: Staging model for the listing table.
+    columns:
+      - name: listid
+        description: Unique identifier for the listing.
+        tests:
+          - unique
+          - not_null
+      - name: sellerid
+        description: Foreign key for the user who is the seller.
+      - name: eventid
+        description: Foreign key for the event.
+      - name: dateid
+        description: Foreign key for the date.
+      - name: numtickets
+        description: Number of tickets for the listing.
+      - name: priceperticket
+        description: Price per ticket in the listing.
+      - name: totalprice
+        description: Total price of the listing.
+      - name: listtime
+        description: Time when the listing was created.
+
+  - name: stg_sale
+    description: Staging model for the sale table.
+    columns:
+      - name: salesid
+        description: Unique identifier for the sale.
+        tests:
+          - unique
+          - not_null
+      - name: listid
+        description: Foreign key for the listing.
+      - name: sellerid
+        description: Foreign key for the user who is the seller.
+      - name: buyerid
+        description: Foreign key for the user who is the buyer.
+      - name: eventid
+        description: Foreign key for the event.
+      - name: dateid
+        description: Foreign key for the date.
+      - name: qtysold
+        description: Quantity sold in the sale.
+      - name: pricepaid
+        description: Price paid for the sale.
+      - name: commission
+        description: Commission amount.
+      - name: saletime
+        description: Time when the sale was made.
+
+  - name: stg_user
+    description: Staging model for the user table.
+    columns:
+      - name: userid
+        description: Unique identifier for the user.
+        tests:
+          - unique
+          - not_null
+      - name: username
+        description: Username of the user.
+      - name: firstname
+        description: First name of the user.
+      - name: lastname
+        description: Last name of the user.
+      - name: city
+        description: City where the user lives.
+      - name: state
+        description: State where the user lives.
+      - name: email
+        description: Email address of the user.
+      - name: phone
+        description: Phone number of the user.
+      - name: likesports
+        description: Indicator for user's interest in sports (true/false).
+      - name: liketheatre
+        description: Indicator for user's interest in theatre (true/false).
+      - name: likeconcerts
+        description: Indicator for user's interest in concerts (true/false).
+      - name: likejazz
+        description: Indicator for user's interest in jazz music (true/false).
+      - name: likeclassical
+        description: Indicator for user's interest in classical music (true/false).
+      - name: likeopera
+        description: Indicator for user's interest in opera (true/false).
+      - name: likerock
+        description: Indicator for user's interest in rock music (true/false).
+      - name: likevegas
+        description: Indicator for user's interest in Las Vegas shows (true/false).
+      - name: likebroadway
+        description: Indicator for user's interest in Broadway shows (true/false).
+      - name: likemusicals
+        description: Indicator for user's interest in musicals (true/false).
+
+  - name: stg_venue
+    description: Staging model for the venue table.
+    columns:
+      - name: venueid
+        description: Unique identifier for the venue.
+        tests:
+          - unique
+          - not_null
+      - name: venuename
+        description: Name of the venue.
+      - name: venuecity
+        description: City where the venue is located.
+      - name: venuestate
+        description: State where the venue is located.
+      - name: venueseats
+        description: Number of seats available in the venue.
+

@@ -1,0 +1,55 @@
+with sales as (
+    select * from "postgres"."public"."stg_sale"
+),
+
+sellers as (
+    select * from "postgres"."public"."seller_sales_intermediate"
+),
+
+q1 as (
+    select
+        seller_id,
+        count(price_paid) as total_transactions,
+        sum(price_paid) as total_sales,
+        sum(qty_sold) as total_tickets_sold,
+        sum(commission) as total_commissions,
+        sum(earnings) as total_earnings
+    from
+        sales
+    group by
+        seller_id
+),
+
+q2 as (
+    select
+        *,
+        ntile(1000) over (
+            order by total_sales desc
+        ) as percentile,
+        round((total_sales::numeric / total_tickets_sold::numeric), 2) as avg_price_per_tickit_sold,
+        round((total_earnings::numeric / total_tickets_sold::numeric), 2) as avg_earnings_per_ticket_sold
+    from
+        q1
+),
+
+final as (
+    select
+        se.username,
+        se.state,
+        q2.total_transactions,
+        q2.total_sales,
+        q2.total_tickets_sold,
+        q2.total_commissions,
+        q2.total_earnings,
+        q2.avg_price_per_tickit_sold,
+        q2.avg_earnings_per_ticket_sold
+    from
+        q2
+        join sellers se on q2.seller_id = se.user_id
+    where
+        q2.percentile = 1
+    order by
+        q2.total_sales desc
+)
+
+select * from final;
